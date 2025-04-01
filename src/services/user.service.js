@@ -1,11 +1,8 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3000/api/test/";
+const API_URL = "http://localhost:5000/api/";
 
-const getPublicContent = () => {
-  return axios.get(API_URL + "all");
-};
-
+// ✅ Remove getPublicContent
 const getUserBoard = () => {
   return axios.get(API_URL + "user");
 };
@@ -19,10 +16,9 @@ const getAdminBoard = () => {
 };
 
 const UserService = {
-  getPublicContent,
   getUserBoard,
   getModeratorBoard,
   getAdminBoard,
-}
+};
 
 export default UserService;

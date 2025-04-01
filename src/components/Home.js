@@ -1,31 +1,19 @@
-import React, { useState, useEffect } from "react";
-
-import UserService from "../services/user.service";
+import React from "react";
 
 const Home = () => {
-  const [content, setContent] = useState("");
-
-  useEffect(() => {
-    UserService.getPublicContent().then(
-      (response) => {
-        setContent(response.data);
-      },
-      (error) => {
-        const _content =
-          (error.response && error.response.data) ||
-          error.message ||
-          error.toString();
-
-        setContent(_content);
-      }
-    );
-  }, []);
-
   return (
-    <div className="container">
+    <div className="container text-center">
       <header className="jumbotron">
-        <h3>{content}</h3>
+        <h3>Welcome to the Home Page</h3>
       </header>
+
+      {/* ✅ Display Image */}
+      <img 
+        src="/homepage.png"  // Access from public folder
+        alt="Homepage"
+        className="img-fluid mt-3"
+        style={{ maxWidth: "100%", height: "auto" }}
+      />
     </div>
   );
 };
