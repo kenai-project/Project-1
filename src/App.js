@@ -9,7 +9,6 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
 import Profile from "./components/Profile";
-import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 import About from "./components/About";
@@ -69,12 +68,11 @@ const App = () => {
           {/* ✅ Fix Navbar Links */}
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav me-auto">
-              <li className="nav-item"><Link to="/home" className="nav-link">Home</Link></li>
+              <li className="nav-item"><Link to="/" className="nav-link">Home</Link></li>
               <li className="nav-item"><Link to="/about" className="nav-link">About</Link></li>
               <li className="nav-item"><Link to="/contactus" className="nav-link">Contact Us</Link></li>
               {showModeratorBoard && <li className="nav-item"><Link to="/mod" className="nav-link">Moderator</Link></li>}
               {showAdminBoard && <li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li>}
-              {currentUser && <li className="nav-item"><Link to="/user" className="nav-link">User</Link></li>}
             </ul>
 
             {/* ✅ Fix Authentication Buttons */}
@@ -107,7 +105,6 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/user" element={<BoardUser />} />
           <Route path="/mod" element={<PrivateRoute roles={["ROLE_MODERATOR"]}><BoardModerator /></PrivateRoute>} />
           <Route path="/admin" element={<PrivateRoute roles={["ROLE_ADMIN"]}><BoardAdmin /></PrivateRoute>} />
           <Route path="/about" element={<About />} />

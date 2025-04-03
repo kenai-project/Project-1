@@ -1,22 +1,42 @@
 import React from "react";
+import "./Home.css";
 
 const Home = () => {
   return (
-    <div className="container d-flex flex-column align-items-center justify-content-center vh-100 text-center">
-      <header className="mb-4">
-        <h1 className="fw-bold">Welcome to Personicle</h1>
-        <p className="text-muted">Your personal space for secure authentication and user management.</p>
+    <div className="home-container">
+      <header className="header">
+        <h1>Welcome to Personicle</h1>
+        <p>Your personal space for secure authentication and user management.</p>
       </header>
 
-      {/* ✅ Display Image */}
-      <img 
-        src="/homepage.png"  // Image should be placed in the public folder
-        alt="Homepage"
-        className="img-fluid rounded shadow"
-        style={{ maxWidth: "80%", height: "auto" }}
-      />
+      {/* Main Content */}
+      <div className="content-wrapper">
+        {/* About Section */}
+        <section className="info-box">
+          <h2>What is Personicle?</h2>
+          <p>
+            Personicle is a platform designed to provide seamless authentication and secure user
+            management. It empowers individuals to have full control over their personal data while
+            ensuring privacy and accessibility.
+          </p>
+        </section>
 
-      <p className="mt-3 text-secondary">Sign up or log in to get started!</p>
+        {/* How It Works Section */}
+        <section className="info-box">
+          <h2>How It Works</h2>
+          <p>
+            Personicle operates through a combination of secure authentication, encrypted data
+            management, and user-centric access controls.
+          </p>
+          <img src="/authentication_flow.png" alt="Authentication Flow" className="info-image" />
+        </section>
+
+        {/* Key Components Section */}
+        <section className="info-box">
+          <h2>Key Components</h2>
+          <img src="/personicle_pie_chart.png" alt="Key Components" className="info-image" />
+        </section>
+      </div>
     </div>
   );
 };
