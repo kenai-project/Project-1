@@ -1,11 +1,13 @@
 import React from "react";
-import "./About.css"; // Import the CSS file for styling
+import "./About.css"; // Import styling
 
 const About = () => {
   return (
     <div className="about-container">
-      <h2>About Us</h2>
-      <p>Welcome to <strong>Personicle</strong>! We aim to provide personalized solutions for managing your data.</p>
+      <h2 className="about-title">About Us</h2>
+      <p className="about-text">
+        Welcome to <strong>Personicle</strong>! We aim to provide personalized solutions for managing your data.
+      </p>
     </div>
   );
 };

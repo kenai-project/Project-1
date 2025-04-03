@@ -1,29 +1,135 @@
-/* Label Styling */
-label {
-  display: block;
-  margin-top: 10px;
+/* ===== 🌎 Global Styling ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-/* Card Styling */
+/* ✅ Ensure body fills screen */
+body, html {
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== 🏠 General Layout ===== */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* ===== 🛠️ Card Styling ===== */
 .card-container.card {
   max-width: 350px !important;
-  padding: 2.5rem;  /* Converted from px to rem */
+  padding: 2.5rem;  
 }
 
 .card {
   background-color: #f7f7f7;
-  padding: 1.5rem 1.75rem 2rem; /* Use rem for better scaling */
+  padding: 1.5rem 1.75rem 2rem;
   margin: 0 auto 1.5rem;
   margin-top: 3rem;
-  border-radius: 2px;
+  border-radius: 10px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Profile Image */
+/* ===== 🖼️ Profile Image ===== */
 .profile-img-card {
   width: 96px;
   height: 96px;
   margin: 0 auto 10px;
   display: block;
   border-radius: 50%;
+}
+
+/* ===== 📌 Navbar Styling ===== */
+.navbar {
+  background-color: #333;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-toggler {
+  border: none;
+  outline: none;
+  box-shadow: none !important;
+}
+
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+}
+
+.navbar-nav .nav-item a {
+  text-decoration: none;
+  color: white;
+  padding: 8px 12px;
+  transition: background 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-item a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+/* ===== 📱 Mobile View (Responsive) ===== */
+@media (max-width: 768px) {
+  /* ✅ Responsive Card */
+  .card-container.card {
+    max-width: 90% !important;
+    padding: 1.5rem;
+  }
+
+  .card {
+    padding: 1rem 1.2rem;
+    margin-top: 2rem;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .profile-img-card {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 8px;
+  }
+
+  /* ✅ Improve Navbar for Small Screens */
+  .navbar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .navbar-nav .nav-item {
+    width: 100%;
+    text-align: center;
+    padding: 8px 0;
+  }
+
+  /* ✅ Ensure buttons and inputs fit screen */
+  input, button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+  }
+
+  button {
+    margin-top: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  /* ✅ Fix Button Layout */
+  .btn {
+    width: 100%;
+  }
 }

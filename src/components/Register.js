@@ -1,123 +1,109 @@
-import React, { useState, useRef } from "react";
-import Form from "react-validation/build/form";
-import Input from "react-validation/build/input";
-import CheckButton from "react-validation/build/button";
-import { isEmail } from "validator";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Eye, EyeOff } from "lucide-react"; // Import icons
+import * as Yup from "yup";
 import AuthService from "../services/auth.service";
-import "./Register.css"; // Import CSS file
-
-// Validation functions
-const required = (value) => !value && <div className="invalid-feedback d-block">This field is required!</div>;
-
-const validEmail = (value) => !isEmail(value) && <div className="invalid-feedback d-block">Invalid email.</div>;
-
-const vusername = (value) =>
-  (value.length < 3 || value.length > 20) && (
-    <div className="invalid-feedback d-block">Username must be between 3 and 20 characters.</div>
-  );
-
-const vpassword = (value) =>
-  (value.length < 6 || value.length > 40) && (
-    <div className="invalid-feedback d-block">Password must be between 6 and 40 characters.</div>
-  );
+import "./Register.css"; 
 
 const Register = () => {
-  const form = useRef();
-  const checkBtn = useRef();
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [successful, setSuccessful] = useState(false);
+  const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [successful, setSuccessful] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State for toggling password
 
-  const onChangeUsername = (e) => setUsername(e.target.value);
-  const onChangeEmail = (e) => setEmail(e.target.value);
-  const onChangePassword = (e) => setPassword(e.target.value);
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().min(3, "Too Short!").max(20, "Too Long!").required("Required"),
+    email: Yup.string().email("Invalid email").required("Required"),
+    password: Yup.string().min(6, "Too Short!").max(40, "Too Long!").required("Required"),
+  });
 
-  const handleRegister = async (e) => {
-    e.preventDefault(); // ✅ Prevent page reload
+  const handleRegister = async (values) => {
     setMessage("");
     setSuccessful(false);
     setLoading(true);
 
-    form.current.validateAll();
-
-    if (checkBtn.current.context._errors.length === 0) {
-      try {
-        const response = await AuthService.register(username, email, password);
-        console.log("API Response:", response); // ✅ Debugging API response
-        setMessage(response?.data?.message || "Registration successful!"); // ✅ Prevents undefined error
-        setSuccessful(true);
-      } catch (error) {
-        console.error("Registration error:", error); // ✅ Debugging API error
-        const resMessage =
-          error?.response?.data?.message || // ✅ Safe error handling
-          error?.message || 
-          "Something went wrong!";
-        setMessage(resMessage);
-        setSuccessful(false);
-      } finally {
-        setLoading(false);
-      }
-    } else {
+    try {
+      const response = await AuthService.register(values.username, values.email, values.password);
+      setMessage(response?.data?.message || "Registration successful!");
+      setSuccessful(true);
+      setTimeout(() => navigate("/login"), 2000);
+    } catch (error) {
+      setMessage(error?.response?.data?.message || "Something went wrong!");
+      setSuccessful(false);
+    } finally {
       setLoading(false);
-      console.log("Validation errors:", checkBtn.current.context._errors); // ✅ Debugging validation errors
     }
   };
 
   return (
-    <div
-      className="register-container"
-      style={{
-        backgroundImage: "url('https://source.unsplash.com/1600x900/?nature,abstract')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <div className="register-container">
       <div className="card card-container">
-        <img src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="profile-img" className="profile-img-card" />
+        <img
+          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          alt="profile-img"
+          className="profile-img-card"
+        />
 
-        <Form onSubmit={handleRegister} ref={form}>
-          {!successful && (
-            <div>
-              <div className="form-group">
-                <label htmlFor="username">Username</label>
-                <Input type="text" className="form-control" name="username" value={username} onChange={onChangeUsername} validations={[required, vusername]} />
-              </div>
+        <Formik
+          initialValues={{ username: "", email: "", password: "" }}
+          validationSchema={validationSchema}
+          onSubmit={handleRegister}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              {!successful && (
+                <>
+                  <div className="form-group mb-3">
+                    <label htmlFor="username">Username</label>
+                    <Field type="text" className="form-control" name="username" />
+                    <ErrorMessage name="username" component="div" className="invalid-feedback d-block" />
+                  </div>
 
-              <div className="form-group">
-                <label htmlFor="email">Email</label>
-                <Input type="text" className="form-control" name="email" value={email} onChange={onChangeEmail} validations={[required, validEmail]} />
-              </div>
+                  <div className="form-group mb-3">
+                    <label htmlFor="email">Email</label>
+                    <Field type="email" className="form-control" name="email" />
+                    <ErrorMessage name="email" component="div" className="invalid-feedback d-block" />
+                  </div>
 
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <Input type="password" className="form-control" name="password" value={password} onChange={onChangePassword} validations={[required, vpassword]} />
-              </div>
+                  <div className="form-group mb-3">
+                    <label htmlFor="password">Password</label>
+                    <div className="password-input-container">
+                      <Field 
+                        type={showPassword ? "text" : "password"} 
+                        className="form-control" 
+                        name="password" 
+                      />
+                      <span 
+                        className="toggle-password" 
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                      </span>
+                    </div>
+                    <ErrorMessage name="password" component="div" className="invalid-feedback d-block" />
+                  </div>
 
-              <div className="form-group">
-                <button className="btn btn-primary btn-block" disabled={loading}>
-                  {loading && <span className="spinner-border spinner-border-sm"></span>}
-                  <span>Sign Up</span>
-                </button>
-              </div>
-            </div>
+                  <div className="form-group d-grid">
+                    <button className="btn btn-primary" disabled={isSubmitting || loading}>
+                      {loading && <span className="spinner-border spinner-border-sm me-2"></span>}
+                      Sign Up
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {message && (
+                <div className="form-group mt-3">
+                  <div className={successful ? "alert alert-success" : "alert alert-danger"} role="alert">
+                    {message}
+                  </div>
+                </div>
+              )}
+            </Form>
           )}
-
-          {message && (
-            <div className="form-group">
-              <div className={successful ? "alert alert-success" : "alert alert-danger"} role="alert">
-                {message}
-              </div>
-            </div>
-          )}
-          <CheckButton style={{ display: "none" }} ref={checkBtn} />
-        </Form>
+        </Formik>
       </div>
     </div>
   );
