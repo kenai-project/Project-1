@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 import AuthService from "./services/auth.service";
-
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Home from "./components/Home";
@@ -21,6 +20,8 @@ const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const App = () => {
       setShowModeratorBoard(false);
       setShowAdminBoard(false);
       setCurrentUser(null);
+      setShowProfileModal(false);
       navigate("/login");
     };
 
@@ -45,14 +47,35 @@ const App = () => {
     };
   }, [navigate]);
 
+  const handleLogout = () => {
+    AuthService.logout();
+    setShowModeratorBoard(false);
+    setShowAdminBoard(false);
+    setCurrentUser(null);
+    setShowProfileModal(false);
+    navigate("/login");
+  };
+
+  const handleMouseEnter = (e) => {
+    const profileImage = e.target.getBoundingClientRect();
+    setModalPosition({
+      top: profileImage.bottom + window.scrollY + 10,
+      left: profileImage.left + window.scrollX - 70,
+    });
+    setShowProfileModal(true);
+  };
+
+  const handleProfileClick = () => {
+    setShowProfileModal(false);
+    navigate("/profile");
+  };
+
   return (
     <div>
-      {/* ✅ Fixed Navbar */}
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand">Personicle</Link>
 
-          {/* ✅ Fix Navbar Toggle Button */}
           <button 
             className="navbar-toggler" 
             type="button" 
@@ -65,7 +88,6 @@ const App = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          {/* ✅ Fix Navbar Links */}
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav me-auto">
               <li className="nav-item"><Link to="/" className="nav-link">Home</Link></li>
@@ -75,17 +97,25 @@ const App = () => {
               {showAdminBoard && <li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li>}
             </ul>
 
-            {/* ✅ Fix Authentication Buttons */}
             <ul className="navbar-nav ms-auto">
               {currentUser ? (
-                <>
-                  <li className="nav-item"><Link to="/profile" className="nav-link">{currentUser.username}</Link></li>
-                  <li className="nav-item">
-                    <button className="btn btn-danger btn-sm mx-1" onClick={() => EventBus.dispatch("logout")}>
-                      LogOut
-                    </button>
-                  </li>
-                </>
+                <li className="nav-item">
+                  <div
+                    className="nav-link d-flex align-items-center"
+                    onMouseEnter={handleMouseEnter}
+                    onClick={handleProfileClick} // ✅ Clicking goes to Profile page
+                    style={{ cursor: "pointer" }} // ✅ Show pointer cursor for clickability
+                  >
+                    <img 
+                      src={currentUser?.profileImageUrl || "/default-profile.jpg"} 
+                      alt="Profile" 
+                      className="rounded-circle" 
+                      width="30" 
+                      height="30" 
+                    />
+                    <span className="ms-2">{currentUser?.username}</span>
+                  </div>
+                </li>
               ) : (
                 <>
                   <li className="nav-item"><Link to="/register" className="btn btn-primary btn-sm mx-1">Sign Up</Link></li>
@@ -96,6 +126,31 @@ const App = () => {
           </div>
         </div>
       </nav>
+
+      {/* ✅ Profile Pop-up (Modal) */}
+      {showProfileModal && (
+        <div 
+          className="profile-modal" 
+          style={{
+            position: "absolute",
+            top: `${modalPosition.top}px`,
+            left: `${modalPosition.left}px`,
+            display: showProfileModal ? "block" : "none",
+            backgroundColor: "white",
+            padding: "10px",
+            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+            borderRadius: "8px",
+            zIndex: 1000,
+          }}
+          onMouseEnter={() => setShowProfileModal(true)}
+          onMouseLeave={() => setShowProfileModal(false)}
+        >
+          <p style={{ cursor: "pointer" }} onClick={handleProfileClick}><strong>{currentUser?.username}</strong></p>
+          <button className="btn btn-danger btn-sm" onClick={handleLogout}>
+            Log Out
+          </button>
+        </div>
+      )}
 
       {/* ✅ Main Content */}
       <div className="container mt-3">
