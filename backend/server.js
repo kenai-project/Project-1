@@ -3,7 +3,9 @@ require("dotenv").config(); // Load environment variables
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+
 const authRoutes = require("./routes/auth.routes");
+const aiRoutes = require("./routes/ai.routes"); // 🧠 AI route
 
 const app = express();
 
@@ -20,18 +22,20 @@ app.use(express.json()); // Parse JSON request bodies
 // ✅ MongoDB Connection
 if (!process.env.MONGO_URI) {
   console.error("❌ MONGO_URI is not defined in environment variables.");
-  process.exit(1); // Exit the process if MONGO_URI is not set
+  process.exit(1);
 }
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Connected to MongoDB"))
   .catch((err) => {
     console.error("❌ MongoDB connection error:", err);
-    process.exit(1); // Exit the process if MongoDB connection fails
+    process.exit(1);
   });
 
 // ✅ Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/ai", aiRoutes); // 🔥 AI route activated
 
 // ✅ Root Route (Health Check)
 app.get("/", (req, res) => {
