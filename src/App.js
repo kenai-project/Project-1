@@ -95,7 +95,11 @@ const App = () => {
               <li className="nav-item"><Link to="/" className="nav-link">Home</Link></li>
               <li className="nav-item"><Link to="/about" className="nav-link">About</Link></li>
               <li className="nav-item"><Link to="/contactus" className="nav-link">Contact Us</Link></li>
-              <li className="nav-item"><Link to="/report" className="nav-link">Report</Link></li> {/* ✅ NEW */}
+              {currentUser && (
+                <li className="nav-item">
+                  <Link to="/report" className="nav-link">Report</Link>
+                </li>
+              )}
               {showModeratorBoard && <li className="nav-item"><Link to="/mod" className="nav-link">Moderator</Link></li>}
               {showAdminBoard && <li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li>}
             </ul>
@@ -181,7 +185,12 @@ const App = () => {
           <Route path="/admin" element={<PrivateRoute roles={["ROLE_ADMIN"]}><BoardAdmin /></PrivateRoute>} />
           <Route path="/about" element={<About />} />
           <Route path="/contactus" element={<ContactUs />} />
-          <Route path="/report" element={<Report />} /> {/* ✅ NEW */}
+          <Route path="/report" element={
+            <PrivateRoute>
+              <Report />
+            </PrivateRoute>
+          } />
+
         </Routes>
       </div>
     </div>

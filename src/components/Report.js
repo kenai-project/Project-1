@@ -1,7 +1,22 @@
 // src/Report.js
 import React, { useState } from 'react';
-import { Container, Typography, Button, TextField, Box, Grid, Paper } from '@mui/material';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import {
+  Container,
+  Typography,
+  Button,
+  TextField,
+  Box,
+  Paper
+} from '@mui/material'; // Removed Grid from here
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer
+} from 'recharts';
 import axios from 'axios';
 
 const Report = () => {
