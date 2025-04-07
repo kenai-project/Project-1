@@ -21,6 +21,7 @@ const App = () => {
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const navigate = useNavigate();
 
@@ -60,7 +61,7 @@ const App = () => {
     const profileImage = e.target.getBoundingClientRect();
     setModalPosition({
       top: profileImage.bottom + window.scrollY + 10,
-      left: profileImage.left + window.scrollX - 70,
+      left: profileImage.left + window.scrollX - 50,
     });
     setShowProfileModal(true);
   };
@@ -99,10 +100,14 @@ const App = () => {
 
             <ul className="navbar-nav ms-auto">
               {currentUser ? (
-                <li className="nav-item">
+                <li className="nav-item" style={{ position: "relative" }}>
+                  <div
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={() => setShowProfileModal(false)}
+                    style={{ position: "relative", display: "inline-block" }}
+                  >
                   <div
                     className="nav-link d-flex align-items-center"
-                    onMouseEnter={handleMouseEnter}
                     onClick={handleProfileClick} // ✅ Clicking goes to Profile page
                     style={{ cursor: "pointer" }} // ✅ Show pointer cursor for clickability
                   >
@@ -115,7 +120,17 @@ const App = () => {
                     />
                     <span className="ms-2">{currentUser?.username}</span>
                   </div>
-                </li>
+
+                  {showProfileModal && (
+                    <div className="profile-modal">
+                      <p onClick={handleProfileClick}>{currentUser?.username}</p>
+                      <button className="btn btn-danger btn-sm" onClick={handleLogout}>
+                        Log Out
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </li>
               ) : (
                 <>
                   <li className="nav-item"><Link to="/register" className="btn btn-primary btn-sm mx-1">Sign Up</Link></li>
@@ -128,7 +143,7 @@ const App = () => {
       </nav>
 
       {/* ✅ Profile Pop-up (Modal) */}
-      {showProfileModal && (
+      {/* {showProfileModal && (
         <div 
           className="profile-modal" 
           style={{
@@ -150,7 +165,7 @@ const App = () => {
             Log Out
           </button>
         </div>
-      )}
+      )} */}
 
       {/* ✅ Main Content */}
       <div className="container mt-3">
