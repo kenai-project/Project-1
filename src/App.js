@@ -13,6 +13,7 @@ import BoardAdmin from "./components/BoardAdmin";
 import About from "./components/About";
 import ContactUs from "./components/ContactUs";
 import PrivateRoute from "./components/PrivateRoute";
+import Report from "./components/Report"; // ✅ NEW
 
 import EventBus from "./common/EventBus";
 
@@ -93,6 +94,7 @@ const App = () => {
               <li className="nav-item"><Link to="/" className="nav-link">Home</Link></li>
               <li className="nav-item"><Link to="/about" className="nav-link">About</Link></li>
               <li className="nav-item"><Link to="/contactus" className="nav-link">Contact Us</Link></li>
+              <li className="nav-item"><Link to="/report" className="nav-link">Report</Link></li> {/* ✅ NEW */}
               {showModeratorBoard && <li className="nav-item"><Link to="/mod" className="nav-link">Moderator</Link></li>}
               {showAdminBoard && <li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li>}
             </ul>
@@ -103,8 +105,8 @@ const App = () => {
                   <div
                     className="nav-link d-flex align-items-center"
                     onMouseEnter={handleMouseEnter}
-                    onClick={handleProfileClick} // ✅ Clicking goes to Profile page
-                    style={{ cursor: "pointer" }} // ✅ Show pointer cursor for clickability
+                    onClick={handleProfileClick}
+                    style={{ cursor: "pointer" }}
                   >
                     <img 
                       src={currentUser?.profileImageUrl || "/default-profile.jpg"} 
@@ -127,7 +129,7 @@ const App = () => {
         </div>
       </nav>
 
-      {/* ✅ Profile Pop-up (Modal) */}
+      {/* Profile Modal */}
       {showProfileModal && (
         <div 
           className="profile-modal" 
@@ -135,7 +137,6 @@ const App = () => {
             position: "absolute",
             top: `${modalPosition.top}px`,
             left: `${modalPosition.left}px`,
-            display: showProfileModal ? "block" : "none",
             backgroundColor: "white",
             padding: "10px",
             boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
@@ -152,7 +153,7 @@ const App = () => {
         </div>
       )}
 
-      {/* ✅ Main Content */}
+      {/* Routes */}
       <div className="container mt-3">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -164,6 +165,7 @@ const App = () => {
           <Route path="/admin" element={<PrivateRoute roles={["ROLE_ADMIN"]}><BoardAdmin /></PrivateRoute>} />
           <Route path="/about" element={<About />} />
           <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/report" element={<Report />} /> {/* ✅ NEW */}
         </Routes>
       </div>
     </div>
