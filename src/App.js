@@ -146,7 +146,7 @@ const App = () => {
       </nav>
 
       {/* ✅ Profile Pop-up (Modal) */}
-      {showProfileModal && (
+      {/* {showProfileModal && (
         <div 
           className="profile-modal" 
           style={{
