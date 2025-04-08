@@ -1,4 +1,6 @@
 require("dotenv").config(); // Load environment variables
+console.log("🔐 OpenRouter Key Loaded:", process.env.OPENROUTER_API_KEY ? "✅ Yes" : "❌ No");
+
 
 const express = require("express");
 const mongoose = require("mongoose");
