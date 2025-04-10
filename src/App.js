@@ -16,6 +16,9 @@ import PrivateRoute from "./components/PrivateRoute";
 import Report from "./components/Report"; // ✅ NEW
 
 import EventBus from "./common/EventBus";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
