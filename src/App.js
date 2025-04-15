@@ -13,7 +13,9 @@ import BoardAdmin from "./components/BoardAdmin";
 import About from "./components/About";
 import ContactUs from "./components/ContactUs";
 import PrivateRoute from "./components/PrivateRoute";
-import Report from "./components/Report"; // ✅ NEW
+import Report from "./components/Report";
+import FHIRUploader from "../../Project-1/src/components/FHIRUploader";
+import HL7Uploader from "../../Project-1/src/components/HL7Uploader";
 
 import EventBus from "./common/EventBus";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -99,9 +101,17 @@ const App = () => {
               <li className="nav-item"><Link to="/about" className="nav-link">About</Link></li>
               <li className="nav-item"><Link to="/contactus" className="nav-link">Contact Us</Link></li>
               {currentUser && (
-                <li className="nav-item">
-                  <Link to="/report" className="nav-link">Report</Link>
-                </li>
+                <>
+                  <li className="nav-item">
+                    <Link to="/fhir" className="nav-link">FHIR</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/hl7" className="nav-link">HL7</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/report" className="nav-link">Report</Link>
+                  </li>
+                </>
               )}
               {showModeratorBoard && <li className="nav-item"><Link to="/mod" className="nav-link">Moderator</Link></li>}
               {showAdminBoard && <li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li>}
@@ -188,6 +198,16 @@ const App = () => {
           <Route path="/admin" element={<PrivateRoute roles={["ROLE_ADMIN"]}><BoardAdmin /></PrivateRoute>} />
           <Route path="/about" element={<About />} />
           <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/fhir" element={
+            <PrivateRoute>
+              <FHIRUploader />
+            </PrivateRoute>
+          } />
+          <Route path="/hl7" element={
+            <PrivateRoute>
+              <HL7Uploader />
+            </PrivateRoute>
+          } />
           <Route path="/report" element={
             <PrivateRoute>
               <Report />
