@@ -13,10 +13,14 @@ import BoardAdmin from "./components/BoardAdmin";
 import About from "./components/About";
 import ContactUs from "./components/ContactUs";
 import PrivateRoute from "./components/PrivateRoute";
-import Report from "./components/Report"; // ✅ NEW
-import SendHL7 from "./components/SendHL7"; // ✅ NEW
+import Report from "./components/Report";
+import FHIRUploader from "../../Project-1/src/components/FHIRUploader";
+import HL7Uploader from "../../Project-1/src/components/HL7Uploader";
 
 import EventBus from "./common/EventBus";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+
 
 const App = () => {
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
@@ -96,9 +100,17 @@ const App = () => {
               <li className="nav-item"><Link to="/sendhl7" className="nav-link">Send HL7</Link></li>
 
               {currentUser && (
-                <li className="nav-item">
-                  <Link to="/report" className="nav-link">Report</Link>
-                </li>
+                <>
+                  <li className="nav-item">
+                    <Link to="/fhir" className="nav-link">FHIR</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/hl7" className="nav-link">HL7</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/report" className="nav-link">Report</Link>
+                  </li>
+                </>
               )}
               {showModeratorBoard && <li className="nav-item"><Link to="/mod" className="nav-link">Moderator</Link></li>}
               {showAdminBoard && <li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li>}
@@ -160,8 +172,22 @@ const App = () => {
           <Route path="/admin" element={<PrivateRoute roles={["ROLE_ADMIN"]}><BoardAdmin /></PrivateRoute>} />
           <Route path="/about" element={<About />} />
           <Route path="/contactus" element={<ContactUs />} />
-          <Route path="/report" element={<PrivateRoute><Report /></PrivateRoute>} />
-          <Route path="/sendhl7" element={<SendHL7 />} /> {/* Add route for HL7 component */}
+          <Route path="/fhir" element={
+            <PrivateRoute>
+              <FHIRUploader />
+            </PrivateRoute>
+          } />
+          <Route path="/hl7" element={
+            <PrivateRoute>
+              <HL7Uploader />
+            </PrivateRoute>
+          } />
+          <Route path="/report" element={
+            <PrivateRoute>
+              <Report />
+            </PrivateRoute>
+          } />
+
         </Routes>
       </div>
     </div>

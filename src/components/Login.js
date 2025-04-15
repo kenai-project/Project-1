@@ -23,7 +23,7 @@ const Login = () => {
 
     try {
       await AuthService.login(values.email, values.password);
-      navigate("/profile", { replace: true });
+      navigate("/", { replace: true });
     } catch (error) {
       setMessage(error?.response?.data?.message || "Login failed!");
     } finally {

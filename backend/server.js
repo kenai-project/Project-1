@@ -1,6 +1,5 @@
-require("dotenv").config(); // Load environment variables
+require("dotenv").config();
 console.log("🔐 OpenRouter Key Loaded:", process.env.OPENROUTER_API_KEY ? "✅ Yes" : "❌ No");
-
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -10,20 +9,22 @@ const hl7 = require('simple-hl7');
 const axios = require('axios');
 
 const authRoutes = require("./routes/auth.routes");
-const aiRoutes = require("./routes/ai.routes"); // 🧠 AI route
+const aiRoutes = require("./routes/ai.routes");
+const hl7Routes = require("./routes/hl7.routes");
+const fhirRoutes = require("./routes/fhir.routes");
 
 const app = express();
 app.use(bodyParser.json());
 
 // ✅ CORS Configuration
 const corsOptions = {
-  origin: "http://localhost:3000", // Allow frontend access
-  credentials: true, // Allow cookies/auth headers
+  origin: "http://localhost:3000",
+  credentials: true,
 };
 app.use(cors(corsOptions));
 
 // ✅ Middleware
-app.use(express.json()); // Parse JSON request bodies
+app.use(express.json());
 
 // ✅ MongoDB Connection
 if (!process.env.MONGO_URI) {
@@ -41,9 +42,11 @@ mongoose
 
 // ✅ Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/ai", aiRoutes); // 🔥 AI route activated
+app.use("/api/ai", aiRoutes);
+app.use("/api/hl7", hl7Routes);     // 🧾 HL7 parsing endpoint
+app.use("/api/fhir", fhirRoutes);   // 📦 FHIR parsing endpoint
 
-// ✅ Root Route (Health Check)
+// ✅ Root Route
 app.get("/", (req, res) => {
   res.send("🚀 API is running...");
 });
