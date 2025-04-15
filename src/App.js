@@ -97,7 +97,6 @@ const App = () => {
               <li className="nav-item"><Link to="/" className="nav-link">Home</Link></li>
               <li className="nav-item"><Link to="/about" className="nav-link">About</Link></li>
               <li className="nav-item"><Link to="/contactus" className="nav-link">Contact Us</Link></li>
-              <li className="nav-item"><Link to="/sendhl7" className="nav-link">Send HL7</Link></li>
 
               {currentUser && (
                 <>
