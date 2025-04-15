@@ -36,6 +36,8 @@ const FHIRUploader = () => {
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+    setError(null);
+    setResult(null);
   };
 
   const handleResourceTypeChange = (e) => {
@@ -43,14 +45,18 @@ const FHIRUploader = () => {
   };
 
   const loadSample = () => {
-    setResult({ data: JSON.parse(sampleFormats[resourceType]) });
+    try {
+      const sample = JSON.parse(sampleFormats[resourceType]);
+      setResult({ message: 'Loaded sample successfully', data: sample });
+    } catch (err) {
+      setError('Failed to load sample');
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!file) return;
 
-    // File size validation (e.g., 5MB max)
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
     if (file.size > MAX_FILE_SIZE) {
       setError("File size exceeds the 5MB limit.");
@@ -59,10 +65,11 @@ const FHIRUploader = () => {
 
     setIsLoading(true);
     setError(null);
+    setResult(null);
 
     try {
       const fileContent = await file.text();
-      const jsonData = JSON.parse(fileContent); // Will throw if invalid JSON
+      const jsonData = JSON.parse(fileContent); // Validate JSON
 
       const response = await axios.post('http://localhost:5000/api/fhir/parse-fhir', {
         resourceType,
@@ -71,6 +78,7 @@ const FHIRUploader = () => {
 
       setResult(response.data);
     } catch (err) {
+      console.error("FHIR upload error:", err);
       setError(err.response?.data?.error || 'Failed to process FHIR file');
     } finally {
       setIsLoading(false);
