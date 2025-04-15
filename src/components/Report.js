@@ -1,4 +1,3 @@
-// src/Report.js
 import React, { useState } from 'react';
 import {
   Container,
@@ -7,7 +6,7 @@ import {
   TextField,
   Box,
   Paper
-} from '@mui/material'; // Removed Grid from here
+} from '@mui/material';
 import {
   LineChart,
   Line,
@@ -23,6 +22,9 @@ const Report = () => {
   const [file, setFile] = useState(null);
   const [symptoms, setSymptoms] = useState('');
   const [aiResponse, setAiResponse] = useState('');
+
+  const [hl7Message, setHl7Message] = useState('');
+  const [hl7Response, setHl7Response] = useState('');
 
   const chartData = [
     { name: 'Day 1', value: 40 },
@@ -41,6 +43,19 @@ const Report = () => {
       setAiResponse(res.data.reply);
     } catch (error) {
       setAiResponse('Something went wrong. Try again later.');
+    }
+  };
+
+  const handleSendHL7 = async () => {
+    try {
+      const res = await axios.post('http://localhost:5000/api/hl7/send', {
+        message: hl7Message,
+      });
+
+      setHl7Response(res.data.response || 'Message sent successfully.');
+    } catch (error) {
+      console.error("Error sending HL7 message", error);
+      setHl7Response('Failed to send HL7 message. Please check the server.');
     }
   };
 
@@ -87,6 +102,29 @@ const Report = () => {
           <Box mt={2}>
             <Typography variant="subtitle1">AI Response:</Typography>
             <Typography variant="body1">{aiResponse}</Typography>
+          </Box>
+        )}
+      </Paper>
+
+      {/* HL7 Message Sender */}
+      <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
+        <Typography variant="h6">Send HL7 Message</Typography>
+        <TextField
+          fullWidth
+          multiline
+          rows={4}
+          placeholder="Paste your HL7 message here..."
+          value={hl7Message}
+          onChange={(e) => setHl7Message(e.target.value)}
+          sx={{ mb: 2 }}
+        />
+        <Button variant="outlined" onClick={handleSendHL7}>Send HL7</Button>
+        {hl7Response && (
+          <Box mt={2}>
+            <Typography variant="subtitle1">Server Response:</Typography>
+            <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
+              {hl7Response}
+            </Typography>
           </Box>
         )}
       </Paper>
