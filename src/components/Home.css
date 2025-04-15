@@ -99,26 +99,25 @@ ul.key-points li::before {
 
 .feature-grid {
   display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
   gap: 20px;
-  margin-top: 25px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
 .feature-card {
-  background: #2b2f38;
-  padding: 25px;
-  border-radius: 14px;
-  width: 250px;
+  background: #f9f9f9;
+  padding: 20px;
+  flex: 1;
+  min-width: 200px;
+  border-radius: 10px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
 }
 
 .feature-card h4 {
-  margin: 12px 0 8px;
-  font-size: 1.2rem;
-  color: #00d9ff;
+  margin: 10px 0;
 }
 
 .feature-card p {
@@ -208,4 +207,10 @@ ul.key-points li::before {
 
   .testimonial-cards {
     flex-direction: column;
+  }
+
+  @media (max-width: 768px) {
+    .feature-grid {
+      flex-direction: column;
+    }
   }
