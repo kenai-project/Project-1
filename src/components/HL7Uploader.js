@@ -22,7 +22,7 @@ const HL7Uploader = () => {
     try {
       const fileContent = await file.text();
       const response = await axios.post('http://localhost:5000/api/hl7/parse-hl7', {
-        hl7Message: fileContent
+        message: fileContent // ✅ use correct key expected by backend
       });
       setResult(response.data);
     } catch (err) {
