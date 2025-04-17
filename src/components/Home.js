@@ -37,13 +37,13 @@ const Home = () => {
       <header className="header">
         <h1>🔐 Welcome to <span className="brand-name">Personicle</span></h1>
         <p>Your secure gateway to personal data control and seamless authentication.</p>
-        <img src="/app_homepage.png" alt="Personicle App Overview" className="top-image" />
+        <img src="/homepage.png" alt="Personicle App Overview" className="top-image" />
       </header>
 
       {/* Info Sections */}
       <section className="info-box">
         <h2><FaLock /> What is Personicle?</h2>
-        <img src="/personicle_pie_chart.png" alt="Personicle Pie Chart" className="info-image" />
+        <img src="/personicle_overview.png" alt="Personicle Overview" className="info-image" />
         <p>
           Personicle empowers you to take control of your personal data with private,
           decentralized authentication and secure user management.
@@ -101,7 +101,8 @@ const Home = () => {
 
         {/* Testimonials Auto Slide */}
         <motion.section
-          className="testimonial-section dual-box"
+         className="testimonial-section"
+
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -120,11 +121,11 @@ const Home = () => {
         </motion.section>
       </div>
 
-      {/* Display the image */}
+      {/* Display the image
       <section className="image-section">
         <h2>Our Data Visualization</h2>
         <img src="/personicle_pie_chart.png" alt="Personicle Pie Chart" className="pie-chart-image" />
-      </section>
+      </section> */}
 
       {/* Call to Action (only show if not logged in) */}
       {!isLoggedIn && (

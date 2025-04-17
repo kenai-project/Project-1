@@ -1,3 +1,22 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --navbar-bg: #f8f9fa;
+  --card-bg: #f1f1f1;
+}
+
+[data-theme="dark"] {
+  --bg-color: #0f1218;
+  --text-color: #e0e0e0;
+  --navbar-bg: #333;
+  --card-bg: #23262e;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
 /* ===== 🌎 Global Styling ===== */
 * {
   margin: 0;
@@ -21,11 +40,8 @@ body, html {
 
 /* ===== 📌 Navbar Styling ===== */
 .navbar {
-  background-color: #333;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background-color: var(--navbar-bg);
+  color: var(--text-color);
 }
 
 .navbar-nav {
@@ -48,16 +64,8 @@ body, html {
 
 /* ===== 🎭 Profile Modal Styling ===== */
 .profile-modal {
-  position: absolute;
-  top: 40px;
-  left: 0;
-  width: 200px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  /* z-index: 1050; */
-  transition: all 0.3s ease-in-out;
+  background-color: var(--card-bg);
+  color: var(--text-color);
 }
 
 .profile-modal p {

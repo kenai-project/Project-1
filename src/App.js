@@ -23,6 +23,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 
 const App = () => {
+  const [theme, setTheme] = useState("dark");
   const [showModeratorBoard, setShowModeratorBoard] = useState(false);
   const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
@@ -30,7 +31,15 @@ const App = () => {
   const [, setModalPosition] = useState({ top: 0, left: 0 });
   const navigate = useNavigate();
 
+  const toggleTheme = () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    };
+
   useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme)
+
     const logOut = () => {
       AuthService.logout();
       setShowModeratorBoard(false);
@@ -51,7 +60,7 @@ const App = () => {
     return () => {
       EventBus.remove("logout", logOut);
     };
-  }, [navigate]);
+  }, [navigate, theme]);
 
   const handleLogout = () => {
     AuthService.logout();
@@ -86,9 +95,9 @@ const App = () => {
             type="button" 
             data-bs-toggle="collapse" 
             data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+            // aria-controls="navbarNav"
+            // aria-expanded="false"
+            // aria-label="Toggle navigation"
           >
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -115,6 +124,11 @@ const App = () => {
               {showAdminBoard && <li className="nav-item"><Link to="/admin" className="nav-link">Admin</Link></li>}
             </ul>
             <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+                <button onClick={toggleTheme} className="btn btn-outline-light btn-sm me-2">
+                  {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                </button>
+              </li>
               {currentUser ? (
                 <li className="nav-item" style={{ position: "relative" }}>
                   <div
