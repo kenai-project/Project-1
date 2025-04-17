@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./Home.css";
-import {
-  FaLock, FaUserShield, FaRocket,
-  FaShieldAlt, FaKey, FaUserCheck, FaSmileBeam
-} from "react-icons/fa";
+import AuthService from "../services/auth.service"; // Import AuthService for login state
+import { FaLock, FaUserShield, FaRocket, FaShieldAlt, FaKey, FaUserCheck, FaSmileBeam } from "react-icons/fa";
 import { motion } from "framer-motion";
+import "./Home.css";
 
 const testimonials = [
   {
@@ -23,8 +21,11 @@ const testimonials = [
 
 const Home = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State for login status
 
   useEffect(() => {
+    const user = AuthService.getCurrentUser(); // Check if user is logged in
+    setIsLoggedIn(!!user); // Set login state
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 4000);
@@ -115,12 +116,14 @@ const Home = () => {
         </motion.section>
       </div>
 
-      {/* Call to Action */}
-      <section className="cta-section">
-        <h2>Ready to take back control?</h2>
-        <p>Join Personicle and experience the future of secure identity management.</p>
-        <a href="/register" className="cta-button">Get Started</a>
-      </section>
+      {/* Call to Action (only show if not logged in) */}
+      {!isLoggedIn && (
+        <section className="cta-section">
+          <h2>Ready to take back control?</h2>
+          <p>Join Personicle and experience the future of secure identity management.</p>
+          <a href="/register" className="cta-button">Get Started</a>
+        </section>
+      )}
     </div>
   );
 };
