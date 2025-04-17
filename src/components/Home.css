@@ -26,7 +26,6 @@ h1, h2, h4 {
   text-align: center;
 }
 
-
 .header {
   background: linear-gradient(135deg, #00d9ff, #0078ff);
   padding: 50px 30px;
@@ -49,6 +48,12 @@ h1, h2, h4 {
   margin: 0 auto;
 }
 
+.top-image {
+  width: 100%;
+  max-width: 900px;
+  margin-top: 20px;
+  border-radius: 10px;
+}
 
 .info-box {
   background: #1c1f26;
@@ -75,6 +80,13 @@ h1, h2, h4 {
   line-height: 1.6;
 }
 
+.info-image {
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
 
 ul.key-points {
   list-style: none;
@@ -95,7 +107,6 @@ ul.key-points li::before {
   left: 0;
   color: #00d9ff;
 }
-
 
 .feature-grid {
   display: flex;
@@ -130,7 +141,6 @@ ul.key-points li::before {
   transform: translateY(-5px);
 }
 
-
 .testimonial-section {
   width: 100%;
   max-width: 850px;
@@ -163,11 +173,6 @@ ul.key-points li::before {
   color: #9e9e9e;
 }
 
-
-.cta-section {
-  margin: 50px 0 20px;
-}
-
 .cta-section {
   margin: 60px 0 30px;
   text-align: center;
@@ -195,23 +200,10 @@ ul.key-points li::before {
   transform: scale(1.05);
 }
 
-
-@media (max-width: 768px) {
-  .carousel-inner-fixed-size {
-    height: 200px;
-  }
+.pie-chart-image {
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
-
-
-  .header p {
-    font-size: 1rem;
-  }
-
-  .feature-grid {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .testimonial-cards {
-    flex-direction: column;
-  }

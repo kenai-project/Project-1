@@ -37,11 +37,13 @@ const Home = () => {
       <header className="header">
         <h1>🔐 Welcome to <span className="brand-name">Personicle</span></h1>
         <p>Your secure gateway to personal data control and seamless authentication.</p>
+        <img src="/app_homepage.png" alt="Personicle App Overview" className="top-image" />
       </header>
 
       {/* Info Sections */}
       <section className="info-box">
         <h2><FaLock /> What is Personicle?</h2>
+        <img src="/personicle_pie_chart.png" alt="Personicle Pie Chart" className="info-image" />
         <p>
           Personicle empowers you to take control of your personal data with private,
           decentralized authentication and secure user management.
@@ -50,6 +52,7 @@ const Home = () => {
 
       <section className="info-box">
         <h2><FaUserShield /> How It Works</h2>
+        <img src="/personicle_pie_chart.png" alt="How It Works Diagram" className="info-image" />
         <p>
           We use end-to-end encryption, role-based access control, and privacy-first protocols
           to keep your identity safe and accessible only to you.
@@ -58,6 +61,7 @@ const Home = () => {
 
       <section className="info-box">
         <h2><FaRocket /> Key Components</h2>
+        <img src="/authentication_flow.png" alt="Authentication Flow Diagram" className="info-image" />
         <ul className="key-points">
           <li>✔️ Decentralized Identity</li>
           <li>✔️ Encrypted Data Vaults</li>
@@ -115,6 +119,12 @@ const Home = () => {
           </motion.div>
         </motion.section>
       </div>
+
+      {/* Display the image */}
+      <section className="image-section">
+        <h2>Our Data Visualization</h2>
+        <img src="/personicle_pie_chart.png" alt="Personicle Pie Chart" className="pie-chart-image" />
+      </section>
 
       {/* Call to Action (only show if not logged in) */}
       {!isLoggedIn && (
