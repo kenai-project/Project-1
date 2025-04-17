@@ -34,10 +34,21 @@ const FHIRUploader = () => {
     }`
   };
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  const handleFileChange = async (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
     setError(null);
     setResult(null);
+
+    if (selectedFile) {
+      try {
+        const fileText = await selectedFile.text();
+        const parsed = JSON.parse(fileText);
+        setResult({ message: 'Preview of uploaded file', data: parsed });
+      } catch (err) {
+        setError('Invalid JSON in file');
+      }
+    }
   };
 
   const handleResourceTypeChange = (e) => {
@@ -48,9 +59,16 @@ const FHIRUploader = () => {
     try {
       const sample = JSON.parse(sampleFormats[resourceType]);
       setResult({ message: 'Loaded sample successfully', data: sample });
+      setFile(null); // Clear file if sample is loaded
     } catch (err) {
       setError('Failed to load sample');
     }
+  };
+
+  const handleReset = () => {
+    setFile(null);
+    setResult(null);
+    setError(null);
   };
 
   const handleSubmit = async (e) => {
@@ -98,22 +116,29 @@ const FHIRUploader = () => {
           </select>
         </div>
 
-        <input 
-          type="file" 
-          onChange={handleFileChange} 
-          accept=".json" 
+        <input
+          type="file"
+          onChange={handleFileChange}
+          accept=".json"
         />
 
         <div className="button-group">
           <button type="submit" disabled={!file || isLoading}>
             {isLoading ? 'Processing...' : 'Upload & Process'}
           </button>
-          <button 
-            type="button" 
+          <button
+            type="button"
             onClick={loadSample}
             className="sample-button"
           >
             Load Sample
+          </button>
+          <button
+            type="button"
+            onClick={handleReset}
+            className="reset-button"
+          >
+            Reset
           </button>
         </div>
       </form>
@@ -121,8 +146,8 @@ const FHIRUploader = () => {
       {error && <div className="error">{error}</div>}
       {result && (
         <div className="result">
-          <h3>Processed Result:</h3>
-          <pre>{JSON.stringify(result, null, 2)}</pre>
+          <h3>{result.message || 'Processed Result'}:</h3>
+          <pre>{JSON.stringify(result.data || result, null, 2)}</pre>
         </div>
       )}
     </div>

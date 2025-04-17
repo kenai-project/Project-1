@@ -24,6 +24,12 @@
   border-radius: 4px;
 }
 
+.button-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .hl7-uploader button {
   padding: 0.75rem 1.5rem;
   background: #3498db;
@@ -42,6 +48,14 @@
 .hl7-uploader button:disabled {
   background: #95a5a6;
   cursor: not-allowed;
+}
+
+.reset-button {
+  background: #e67e22;
+}
+
+.reset-button:hover {
+  background: #d35400;
 }
 
 .error {
@@ -63,4 +77,5 @@
 pre {
   white-space: pre-wrap;
   word-wrap: break-word;
+  margin: 0;
 }
