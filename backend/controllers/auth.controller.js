@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.model");
+require('dotenv').config();
 
 // ✅ Register a new user
 const register = async (req, res) => {
@@ -16,6 +17,12 @@ const register = async (req, res) => {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ success: false, message: "Email already in use." });
+        }
+
+        // 🔹 Password Validation (example)
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            return res.status(400).json({ success: false, message: "Password must be at least 8 characters, contain a number, and a special character." });
         }
 
         // 🔹 Hash password & create user
