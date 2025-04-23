@@ -16,6 +16,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Report from "./components/Report";
 import FHIRUploader from "../../Project-1/src/components/FHIRUploader";
 import HL7Uploader from "../../Project-1/src/components/HL7Uploader";
+import PatientManager from "./components/PatientManager";
 
 import EventBus from "./common/EventBus";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -118,6 +119,9 @@ const App = () => {
                   <li className="nav-item">
                     <Link to="/report" className="nav-link">Report</Link>
                   </li>
+                  <li className="nav-item">
+                    <Link to="/patients" className="nav-link">Patients</Link>
+                  </li>
                 </>
               )}
               {showModeratorBoard && <li className="nav-item"><Link to="/mod" className="nav-link">Moderator</Link></li>}
@@ -173,7 +177,7 @@ const App = () => {
         </div>
       </nav>
 
-      {/* Routes */}
+      {/* Routes */} 
       <div className="container mt-3">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -200,7 +204,11 @@ const App = () => {
               <Report />
             </PrivateRoute>
           } />
-
+          <Route path="/patients" element={
+            <PrivateRoute>
+              <PatientManager />
+            </PrivateRoute>
+          } />
         </Routes>
       </div>
     </div>
