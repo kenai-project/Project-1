@@ -23,12 +23,15 @@ function PatientManager() {
   }, []);
 
   async function fetchPatients() {
+    console.log("Fetching patients...");
     setLoading(true);
     setError(null);
     try {
       const data = await patientService.getPatients();
+      console.log("Fetched patients data:", data);
       setPatients(data);
     } catch (err) {
+      console.error("Error fetching patients:", err);
       setError(err.message || "Failed to fetch patients");
     } finally {
       setLoading(false);

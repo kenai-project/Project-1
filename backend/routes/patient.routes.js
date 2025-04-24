@@ -3,7 +3,8 @@ const router = express.Router();
 const patientController = require("../controllers/patient.controller");
 
 // Initialize patients table before handling any requests
-router.use(patientController.initializePatientTable);
+// Temporarily disable to debug 404 issue
+// router.use(patientController.initializePatientTable);
 
 // GET /api/patients - get all patients
 router.get("/", patientController.getPatients);

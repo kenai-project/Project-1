@@ -1,8 +1,7 @@
-require("dotenv").config(); // Load environment variables
+require("dotenv").config({ path: "../.env" }); // Load environment variables from root .env
 console.log("🔐 OpenRouter Key Loaded:", process.env.OPENROUTER_API_KEY ? "✅ Yes" : "❌ No");
 
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const hl7 = require("simple-hl7");
@@ -29,20 +28,6 @@ app.use(cors(corsOptions));
 
 // ✅ Middleware
 app.use(express.json());
-
-// ✅ MongoDB Connection
-if (!process.env.MONGO_URI) {
-  console.error("❌ MONGO_URI is not defined in environment variables.");
-  process.exit(1);
-}
-
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ Connected to MongoDB"))
-  .catch((err) => {
-    console.error("❌ MongoDB connection error:", err);
-    process.exit(1);
-  });
 
 // ✅ PostgreSQL Connection
 if (!process.env.PG_CONNECTION_STRING) {
@@ -131,7 +116,6 @@ const server = app.listen(PORT, () => {
 // ✅ Graceful Shutdown
 process.on("SIGINT", async () => {
   console.log("🛑 Gracefully shutting down...");
-  await mongoose.disconnect();
   await pgPool.end();
   server.close(() => {
     console.log("👋 Server closed.");
