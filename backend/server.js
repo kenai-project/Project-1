@@ -6,13 +6,11 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const hl7 = require("simple-hl7");
-const { Pool } = require("pg");
 
 const authRoutes = require("./routes/auth.routes");
 const aiRoutes = require("./routes/ai.routes");
 const hl7Routes = require("./routes/hl7.routes");
 const fhirRoutes = require("./routes/fhir.routes");
-const patientRoutes = require("./routes/patient.routes");
 
 // Optional: HL7 message logging model (create models/HL7Log.js)
 const HL7Log = require("./models/HL7Log");
@@ -44,32 +42,11 @@ mongoose
     process.exit(1);
   });
 
-// ✅ PostgreSQL Connection
-if (!process.env.PG_CONNECTION_STRING) {
-  console.error("❌ PG_CONNECTION_STRING is not defined in environment variables.");
-  process.exit(1);
-}
-
-const pgPool = new Pool({
-  connectionString: process.env.PG_CONNECTION_STRING,
-});
-
-pgPool.on("connect", () => {
-  console.log("✅ Connected to PostgreSQL");
-});
-
-// Make pgPool accessible in req for controllers
-app.use((req, res, next) => {
-  req.pgPool = pgPool;
-  next();
-});
-
 // ✅ Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/hl7", hl7Routes);
 app.use("/api/fhir", fhirRoutes);
-app.use("/api/patients", patientRoutes);
 
 // ✅ Root Route
 app.get("/", (req, res) => {
@@ -132,7 +109,6 @@ const server = app.listen(PORT, () => {
 process.on("SIGINT", async () => {
   console.log("🛑 Gracefully shutting down...");
   await mongoose.disconnect();
-  await pgPool.end();
   server.close(() => {
     console.log("👋 Server closed.");
     process.exit(0);
