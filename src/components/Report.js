@@ -1,131 +1,150 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
+  Paper,
   Button,
-  TextField,
+  List,
+  ListItem,
+  ListItemText,
   Box,
-  Paper
+  Link,
 } from '@mui/material';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer
-} from 'recharts';
 import axios from 'axios';
 
 const Report = () => {
   const [file, setFile] = useState(null);
-  const [symptoms, setSymptoms] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
+  const [uploadedFiles, setUploadedFiles] = useState([]);
 
-  const [hl7Message, setHl7Message] = useState('');
-  const [hl7Response, setHl7Response] = useState('');
+  const fetchUploadedFiles = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/upload');
+      setUploadedFiles(res.data);
+    } catch (error) {
+      console.error('Failed to fetch uploaded files', error);
+    }
+  };
 
-  const chartData = [
-    { name: 'Day 1', value: 40 },
-    { name: 'Day 2', value: 45 },
-    { name: 'Day 3', value: 50 },
-    { name: 'Day 4', value: 55 },
-  ];
+  useEffect(() => {
+    fetchUploadedFiles();
+  }, []);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  const handleAIAnalyze = async () => {
-    try {
-      const res = await axios.post('http://localhost:5000/api/ai/symptoms', { symptoms });
-      setAiResponse(res.data.reply);
-    } catch (error) {
-      setAiResponse('Something went wrong. Try again later.');
-    }
-  };
+  const handleUpload = async () => {
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('file', file);
 
-  const handleSendHL7 = async () => {
     try {
-      const res = await axios.post('http://localhost:5000/api/hl7/send', {
-        message: hl7Message,
+      await axios.post('http://localhost:5000/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-
-      setHl7Response(res.data.response || 'Message sent successfully.');
+      setFile(null);
+      fetchUploadedFiles();
     } catch (error) {
-      console.error("Error sending HL7 message", error);
-      setHl7Response('Failed to send HL7 message. Please check the server.');
+      console.error('File upload failed', error);
     }
   };
 
   return (
-    <Container maxWidth="md">
-      <Typography variant="h4" gutterBottom>Medical Report Analysis</Typography>
+    <Container maxWidth="md" sx={{ mt: 4, mb: 4 }}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{
+          fontWeight: 'bold',
+          color: '#0d47a1',
+          backgroundColor: '#e3f2fd',
+          padding: '10px 15px',
+          borderRadius: 1,
+          userSelect: 'none',
+        }}
+      >
+        Medical Report Analysis
+      </Typography>
 
       {/* File Upload */}
-      <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
-        <Typography variant="h6">Upload X-ray / Report</Typography>
-        <input type="file" onChange={handleFileChange} />
-        {file && <Typography variant="body2">Selected: {file.name}</Typography>}
-      </Paper>
-
-      {/* Chart Section */}
-      <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
-        <Typography variant="h6">Health Trends</Typography>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="value" stroke="#1976d2" />
-          </LineChart>
-        </ResponsiveContainer>
-      </Paper>
-
-      {/* AI Input */}
-      <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
-        <Typography variant="h6">Describe Your Symptoms</Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={3}
-          value={symptoms}
-          onChange={(e) => setSymptoms(e.target.value)}
-          placeholder="e.g., headache, nausea, fatigue"
-        />
-        <Button variant="contained" sx={{ mt: 2 }} onClick={handleAIAnalyze}>
-          Analyze with AI
-        </Button>
-        {aiResponse && (
-          <Box mt={2}>
-            <Typography variant="subtitle1">AI Response:</Typography>
-            <Typography variant="body1">{aiResponse}</Typography>
-          </Box>
+      <Paper
+        elevation={3}
+        sx={{
+          p: 3,
+          mb: 4,
+          borderRadius: 2,
+          bgcolor: '#1565c0', // light blue
+        }}
+      >
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: 'medium' }}>
+          Upload X-ray / Report
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Button variant="contained" component="label" color="primary">
+            Choose File
+            <input type="file" hidden onChange={handleFileChange} />
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleUpload}
+            disabled={!file}
+            sx={{ minWidth: 100 }}
+          >
+            Upload
+          </Button>
+        </Box>
+        {file && (
+          <Typography variant="body2" sx={{ mt: 2, fontStyle: 'italic', color: '#555' }}>
+            Selected: {file.name}
+          </Typography>
         )}
       </Paper>
 
-      {/* HL7 Message Sender */}
-      <Paper elevation={2} sx={{ p: 2, mb: 3 }}>
-        <Typography variant="h6">Send HL7 Message</Typography>
-        <TextField
-          fullWidth
-          multiline
-          rows={4}
-          placeholder="Paste your HL7 message here..."
-          value={hl7Message}
-          onChange={(e) => setHl7Message(e.target.value)}
-          sx={{ mb: 2 }}
-        />
-        <Button variant="outlined" onClick={handleSendHL7}>Send HL7</Button>
-        {hl7Response && (
-          <Box mt={2}>
-            <Typography variant="subtitle1">Server Response:</Typography>
-            <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
-              {hl7Response}
-            </Typography>
-          </Box>
+      {/* Uploaded Files List */}
+      <Paper
+        elevation={3}
+        sx={{
+          p: 3,
+          borderRadius: 2,
+          bgcolor: '#1565c0', // same light blue
+        }}
+      >
+        <Typography variant="h6" sx={{ mb: 2, fontWeight: 'medium' }}>
+          Uploaded Files
+        </Typography>
+        {uploadedFiles.length === 0 ? (
+          <Typography>No files uploaded yet.</Typography>
+        ) : (
+          <List>
+            {uploadedFiles.map((filename) => (
+              <ListItem
+                key={filename}
+                sx={{
+                  borderRadius: 1,
+                  mb: 1,
+                  bgcolor: '#1976d2', // slightly different blue
+                  color: '#fff',
+                  '&:hover': { bgcolor: '#1e88e5' },
+                }}
+                secondaryAction={
+                  <Link
+                    href={`http://localhost:5000/uploads/${filename}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    underline="hover"
+                    sx={{ color: '#bbdefb' }}
+                  >
+                    View
+                  </Link>
+                }
+              >
+                <ListItemText primary={filename} />
+              </ListItem>
+            ))}
+          </List>
         )}
       </Paper>
     </Container>
