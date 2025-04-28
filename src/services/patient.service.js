@@ -1,4 +1,4 @@
-const API_URL = "/api/patients";
+const API_URL = "http://localhost:5000/api/patients";
 
 async function getPatients() {
   const response = await fetch(API_URL);
@@ -50,7 +50,6 @@ async function deletePatient(id) {
   return true;
 }
 
-// Assign to a variable first
 const patientService = {
   getPatients,
   getPatient,
@@ -59,5 +58,4 @@ const patientService = {
   deletePatient,
 };
 
-// Then export it as default
 export default patientService;
