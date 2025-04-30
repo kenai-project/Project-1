@@ -16,8 +16,11 @@ const patientRoutes = require("./routes/patient.routes");
 // Optional: HL7 message logging model (create models/HL7Log.js)
 const HL7Log = require("./models/HL7Log");
 
+const path = require('path');
 const app = express();
 app.use(bodyParser.json());
+
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // ✅ CORS Configuration
 const corsOptions = {
@@ -55,6 +58,7 @@ app.use("/api/ai", aiRoutes);
 app.use("/api/hl7", hl7Routes);
 app.use("/api/fhir", fhirRoutes);
 app.use("/api/patients", patientRoutes);
+app.use("/api/upload", require("./routes/upload.routes"));
 
 // ✅ Root Route
 app.get("/", (req, res) => {
