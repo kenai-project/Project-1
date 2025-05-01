@@ -52,7 +52,7 @@ h1, h2, h4 {
 }
 
 .info-box {
-  background: #1c1f26;
+  background: var(--card-bg);
   margin: 40px 0;
   padding: 35px;
   border-radius: 16px;
@@ -113,7 +113,7 @@ ul.key-points li::before {
 }
 
 .feature-card {
-  background: #2b2f38;
+  background: var(--card-bg);
   padding: 25px;
   border-radius: 14px;
   width: 250px;
@@ -130,7 +130,7 @@ ul.key-points li::before {
 
 .feature-card p {
   font-size: 1rem;
-  color: #cfd8dc;
+  color: var(--text-color);
 }
 
 .feature-card:hover {
@@ -156,12 +156,12 @@ ul.key-points li::before {
 }
 
 .testimonial-card {
-  background: #23262e;
+  background: var(--card-bg);
   padding: 25px;
   border-radius: 14px;
   min-width: 100%;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
-  color: #dfe6e9;
+  color: var(--text-color);
   text-align: center;
 }
 

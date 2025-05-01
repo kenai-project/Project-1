@@ -83,6 +83,15 @@ const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
 
+  // Synchronize data-theme attribute with themeMode for CSS variables
+  useEffect(() => {
+    if (themeMode === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, [themeMode]);
+
   const theme = themeMode === 'dark' ? darkTheme : lightTheme;
 
   const toggleTheme = () => {

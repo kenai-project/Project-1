@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import AuthService from "../services/auth.service"; // Import AuthService for login state
+import AuthService from "../services/auth.service";
 import { FaLock, FaUserShield, FaRocket, FaShieldAlt, FaKey, FaUserCheck, FaSmileBeam } from "react-icons/fa";
 import { motion } from "framer-motion";
-import "./Home.css";
+import { Box, Typography, Paper, Grid, Button, useTheme } from "@mui/material";
 
 const testimonials = [
   {
@@ -21,11 +21,12 @@ const testimonials = [
 
 const Home = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State for login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const theme = useTheme();
 
   useEffect(() => {
-    const user = AuthService.getCurrentUser(); // Check if user is logged in
-    setIsLoggedIn(!!user); // Set login state
+    const user = AuthService.getCurrentUser();
+    setIsLoggedIn(!!user);
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 4000);
@@ -33,109 +34,150 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="home-container">
-      <header className="header">
-        <h1>🔐 Welcome to <span className="brand-name">Personicle</span></h1>
-        <p>Your secure gateway to personal data control and seamless authentication.</p>
-        <img src="/homepage.png" alt="Personicle App Overview" className="top-image" />
-      </header>
+    <Box sx={{ p: 4, textAlign: "center", maxWidth: 1000, mx: "auto" }}>
+      <Box sx={{ mb: 6, p: 4, borderRadius: 3, background: `linear-gradient(135deg, ${theme.palette.primary.light}, ${theme.palette.primary.main})`, color: theme.palette.common.white, boxShadow: 3 }}>
+        <Typography variant="h3" component="h1" gutterBottom>
+          🔐 Welcome to <Box component="span" sx={{ color: theme.palette.info.light, fontWeight: "bold", textShadow: `0 0 8px ${theme.palette.info.light}` }}>Personicle</Box>
+        </Typography>
+        <Typography variant="h6" component="p" sx={{ maxWidth: 750, mx: "auto" }}>
+          Your secure gateway to personal data control and seamless authentication.
+        </Typography>
+        <Box
+          component="img"
+          src="/homepage.png"
+          alt="Personicle App Overview"
+          sx={{ width: "100%", maxWidth: 900, mt: 3, borderRadius: 2 }}
+        />
+      </Box>
 
-      {/* Info Sections */}
-      <section className="info-box">
-        <h2><FaLock /> What is Personicle?</h2>
-        <img src="/personicle_overview.png" alt="Personicle Overview" className="info-image" />
-        <p>
-          Personicle empowers you to take control of your personal data with private,
-          decentralized authentication and secure user management.
-        </p>
-      </section>
+      <Grid container spacing={4} sx={{ mb: 6 }}>
+        <Grid item xs={12} md={4}>
+          <Paper sx={{ p: 3, backgroundColor: theme.palette.background.paper, boxShadow: 3, borderRadius: 2, textAlign: "left" }}>
+            <Typography variant="h5" sx={{ display: "flex", alignItems: "center", gap: 1, color: theme.palette.info.main, mb: 2 }}>
+              <FaLock /> What is Personicle?
+            </Typography>
+            <Box
+              component="img"
+              src="/personicle_overview.png"
+              alt="Personicle Overview"
+              sx={{ width: "100%", borderRadius: 2, mb: 2 }}
+            />
+            <Typography>
+              Personicle empowers you to take control of your personal data with private, decentralized authentication and secure user management.
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Paper sx={{ p: 3, backgroundColor: theme.palette.background.paper, boxShadow: 3, borderRadius: 2, textAlign: "left" }}>
+            <Typography variant="h5" sx={{ display: "flex", alignItems: "center", gap: 1, color: theme.palette.info.main, mb: 2 }}>
+              <FaUserShield /> How It Works
+            </Typography>
+            <Box
+              component="img"
+              src="/personicle_pie_chart.png"
+              alt="How It Works Diagram"
+              sx={{ width: "100%", borderRadius: 2, mb: 2 }}
+            />
+            <Typography>
+              We use end-to-end encryption, role-based access control, and privacy-first protocols to keep your identity safe and accessible only to you.
+            </Typography>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Paper sx={{ p: 3, backgroundColor: theme.palette.background.paper, boxShadow: 3, borderRadius: 2, textAlign: "left" }}>
+            <Typography variant="h5" sx={{ display: "flex", alignItems: "center", gap: 1, color: theme.palette.info.main, mb: 2 }}>
+              <FaRocket /> Key Components
+            </Typography>
+            <Box
+              component="img"
+              src="/authentication_flow.png"
+              alt="Authentication Flow Diagram"
+              sx={{ width: "100%", borderRadius: 2, mb: 2 }}
+            />
+            <ul style={{ paddingLeft: 20 }}>
+              <li>✔️ Decentralized Identity</li>
+              <li>✔️ Encrypted Data Vaults</li>
+              <li>✔️ Real-time Authentication</li>
+              <li>✔️ Role-based Access</li>
+            </ul>
+          </Paper>
+        </Grid>
+      </Grid>
 
-      <section className="info-box">
-        <h2><FaUserShield /> How It Works</h2>
-        <img src="/personicle_pie_chart.png" alt="How It Works Diagram" className="info-image" />
-        <p>
-          We use end-to-end encryption, role-based access control, and privacy-first protocols
-          to keep your identity safe and accessible only to you.
-        </p>
-      </section>
-
-      <section className="info-box">
-        <h2><FaRocket /> Key Components</h2>
-        <img src="/authentication_flow.png" alt="Authentication Flow Diagram" className="info-image" />
-        <ul className="key-points">
-          <li>✔️ Decentralized Identity</li>
-          <li>✔️ Encrypted Data Vaults</li>
-          <li>✔️ Real-time Authentication</li>
-          <li>✔️ Role-based Access</li>
-        </ul>
-      </section>
-
-      {/* Why Choose Us + Testimonials Side by Side */}
-      <div className="dual-section">
-        {/* Why Choose Us */}
-        <motion.section
-          className="info-box dual-box"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2>✨ Why Choose Us?</h2>
-          <div className="feature-grid">
-            <motion.div className="feature-card" whileHover={{ scale: 1.05 }}>
-              <FaShieldAlt size={30} />
-              <h4>Privacy First</h4>
-              <p>Your data, your control—always encrypted.</p>
-            </motion.div>
-            <motion.div className="feature-card" whileHover={{ scale: 1.05 }}>
-              <FaKey size={30} />
-              <h4>Secure Access</h4>
-              <p>Multi-factor authentication at its finest.</p>
-            </motion.div>
-            <motion.div className="feature-card" whileHover={{ scale: 1.05 }}>
-              <FaUserCheck size={30} />
-              <h4>Smart Permissions</h4>
-              <p>Tailored access models that adapt to you.</p>
-            </motion.div>
-          </div>
-        </motion.section>
-
-        {/* Testimonials Auto Slide */}
-        <motion.section
-         className="testimonial-section"
-
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <h2><FaSmileBeam /> User Voices</h2>
+      <Grid container spacing={4} sx={{ mb: 6 }}>
+        <Grid item xs={12} md={6}>
           <motion.div
-            className="testimonial-card"
-            key={currentTestimonial}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            <p>"{testimonials[currentTestimonial].quote}"</p>
-            <span>{testimonials[currentTestimonial].author}</span>
+            <Paper sx={{ p: 3, backgroundColor: theme.palette.background.paper, boxShadow: 3, borderRadius: 2, textAlign: "center" }}>
+              <Typography variant="h5" sx={{ mb: 3 }}>
+                ✨ Why Choose Us?
+              </Typography>
+              <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12} sm={4}>
+                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}>
+                    <FaShieldAlt size={30} color={theme.palette.primary.main} />
+                    <Typography variant="h6">Privacy First</Typography>
+                    <Typography>Your data, your control—always encrypted.</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}>
+                    <FaKey size={30} color={theme.palette.primary.main} />
+                    <Typography variant="h6">Secure Access</Typography>
+                    <Typography>Multi-factor authentication at its finest.</Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}>
+                    <FaUserCheck size={30} color={theme.palette.primary.main} />
+                    <Typography variant="h6">Smart Permissions</Typography>
+                    <Typography>Tailored access models that adapt to you.</Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Paper>
           </motion.div>
-        </motion.section>
-      </div>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <Paper sx={{ p: 3, backgroundColor: theme.palette.background.paper, boxShadow: 3, borderRadius: 2, textAlign: "center" }}>
+              <Typography variant="h5" sx={{ mb: 3, display: "flex", alignItems: "center", justifyContent: "center", gap: 1 }}>
+                <FaSmileBeam /> User Voices
+              </Typography>
+              <Box>
+                <Typography variant="body1" sx={{ fontStyle: "italic" }}>
+                  "{testimonials[currentTestimonial].quote}"
+                </Typography>
+                <Typography variant="subtitle2" sx={{ mt: 1 }}>
+                  {testimonials[currentTestimonial].author}
+                </Typography>
+              </Box>
+            </Paper>
+          </motion.div>
+        </Grid>
+      </Grid>
 
-      {/* Display the image
-      <section className="image-section">
-        <h2>Our Data Visualization</h2>
-        <img src="/personicle_pie_chart.png" alt="Personicle Pie Chart" className="pie-chart-image" />
-      </section> */}
-
-      {/* Call to Action (only show if not logged in) */}
       {!isLoggedIn && (
-        <section className="cta-section">
-          <h2>Ready to take back control?</h2>
-          <p>Join Personicle and experience the future of secure identity management.</p>
-          <a href="/register" className="cta-button">Get Started</a>
-        </section>
+        <Paper sx={{ p: 4, borderRadius: 2, backgroundColor: theme.palette.background.paper, boxShadow: 3, textAlign: "center" }}>
+          <Typography variant="h4" sx={{ mb: 2 }}>
+            Ready to take back control?
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 3 }}>
+            Join Personicle and experience the future of secure identity management.
+          </Typography>
+          <Button variant="contained" color="primary" href="/register">
+            Get Started
+          </Button>
+        </Paper>
       )}
-    </div>
+    </Box>
   );
 };
 

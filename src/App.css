@@ -1,15 +1,15 @@
 :root {
-  --bg-color: #ffffff;
-  --text-color: #000000;
-  --navbar-bg: #f8f9fa;
-  --card-bg: #f1f1f1;
+  --bg-color: #f9fafb; /* softer off-white */
+  --text-color: #1a1a1a; /* dark gray instead of black */
+  --navbar-bg: #e3e6ea; /* light gray navbar */
+  --card-bg: #ffffff; /* white cards */
 }
 
 [data-theme="dark"] {
-  --bg-color: #0f1218;
-  --text-color: #e0e0e0;
-  --navbar-bg: #333;
-  --card-bg: #23262e;
+  --bg-color: #121620; /* slightly lighter dark background */
+  --text-color: #d1d5db; /* lighter gray text */
+  --navbar-bg: #1f2937; /* dark gray navbar */
+  --card-bg: #1e293b; /* dark card background */
 }
 
 body {
@@ -52,13 +52,13 @@ body, html {
 
 .navbar-nav .nav-item a {
   text-decoration: none;
-  color: white;
+  color: var(--text-color);
   padding: 8px 12px;
   transition: background 0.3s ease-in-out;
 }
 
 .navbar-nav .nav-item a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
   border-radius: 5px;
 }
 
@@ -73,7 +73,7 @@ body, html {
   font-weight: bold;
   font-size: 16px;
   cursor: pointer;
-  color: #333;
+  color: var(--text-color);
 }
 
 .profile-modal .btn {
@@ -108,6 +108,5 @@ body, html {
   .navbar-nav .nav-item {
     width: 100%;
     text-align: center;
-    /* padding: 8px 0; */
   }
 }
